@@ -1,5 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { AccessTokenService } from '../../auth/access-token.service';
+import { LoginResponse } from '../../auth/auth.interface';
 
 @Component({
   selector: 'main-page',
@@ -9,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class MainPageComponent implements OnInit {
   #router = inject(Router);
+  #tokenService = inject(AccessTokenService);
 
   ngOnInit(): void {
     const previousState = localStorage.getItem('auth_state');
@@ -22,7 +25,11 @@ export class MainPageComponent implements OnInit {
       if (returnedState != previousState) {
         this.#router.navigate(['login']);
       } else {
-        alert('State matches, now need to write the access token logic');
+        this.#tokenService.getToken(returnedCode, previousVerifier).subscribe({
+          next: (response: LoginResponse) => {
+            console.log(response);
+          },
+        });
       }
     }
   }
