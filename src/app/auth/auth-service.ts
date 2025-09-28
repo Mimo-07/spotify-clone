@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { base64encode, generateRandomString, hashed } from './auth-pkce';
 import { clientId, spotifyUrl } from './auth.interface';
 
@@ -6,6 +6,8 @@ import { clientId, spotifyUrl } from './auth.interface';
   providedIn: 'root',
 })
 export class AuthService {
+  isLoggedIn = signal<boolean>(false);
+
   startAuth() {
     this.#redirectToAuthCodeFlow();
   }

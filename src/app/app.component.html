@@ -1,24 +1,24 @@
-<!-- @if (isLoggedIn()) {
+@if (isLoggedIn()) {
   <app-bar> </app-bar>
-} -->
+}
 <section class="container">
-  <!-- @if (isLoggedIn()) {
+  @if (isLoggedIn()) {
     <div class="panel left" [style.width.px]="currentWidthLeft()">
       <nav-menu></nav-menu>
     </div>
     <div class="resizer" cdkDrag (cdkDragMoved)="onDragMoved($event, 'left')">
       <span class="drag-icon">::</span>
     </div>
-  } -->
+  }
   <div class="panel middle">
     <router-outlet></router-outlet>
   </div>
-  <!-- @if (isLoggedIn()) {
+  @if (isLoggedIn()) {
     <div class="resizer" cdkDrag (cdkDragMoved)="onDragMoved($event, 'right')">
       <span class="drag-icon">::</span>
     </div>
     <div class="panel right" [style.width.px]="currentWidthRight()">
       <current-player></current-player>
     </div>
-  } -->
+  }
 </section>

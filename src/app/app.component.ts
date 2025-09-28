@@ -1,38 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragMove, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
+import { AuthService } from './auth/auth-service';
+import { CurrentPlayerComponent } from './components/current-player/current-player.component';
+import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
+import { AppBarComponent } from './components/app-bar/app-bar.component';
 
 @Component({
   selector: 'app-root',
-  imports: [DragDropModule, CommonModule, RouterOutlet],
+  imports: [
+    AppBarComponent,
+    CurrentPlayerComponent,
+    NavMenuComponent,
+    DragDropModule,
+    CommonModule,
+    RouterOutlet,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  // readonly isLoggedIn = this.#authService.getIsLoggedIn();
+  readonly #authService = inject(AuthService);
 
-  // #defaultWidth = 250;
+  readonly isLoggedIn = this.#authService.isLoggedIn;
 
-  // currentWidthLeft = signal(this.#defaultWidth);
-  // currentWidthRight = signal(this.#defaultWidth);
+  #defaultWidth = 250;
+
+  currentWidthLeft = signal(this.#defaultWidth);
+  currentWidthRight = signal(this.#defaultWidth);
 
   ngOnInit(): void {}
 
-  // onDragMoved(resizeEvent: CdkDragMove, resizedPane: string) {
-  //   switch (resizedPane) {
-  //     case 'left':
-  //       this.currentWidthLeft.set(resizeEvent.pointerPosition.x);
-  //       break;
-  //     case 'right':
-  //       const container = document.querySelector('.container') as HTMLElement;
-  //       const containerWidth = container.offsetWidth;
-  //       this.currentWidthRight.set(
-  //         containerWidth - resizeEvent.pointerPosition.x,
-  //       );
-  //       break;
-  //   }
-  //   const element = resizeEvent.source.element.nativeElement;
-  //   element.style.transform = 'none';
-  // }
+  onDragMoved(resizeEvent: CdkDragMove, resizedPane: string) {
+    switch (resizedPane) {
+      case 'left':
+        this.currentWidthLeft.set(resizeEvent.pointerPosition.x);
+        break;
+      case 'right':
+        const container = document.querySelector('.container') as HTMLElement;
+        const containerWidth = container.offsetWidth;
+        this.currentWidthRight.set(
+          containerWidth - resizeEvent.pointerPosition.x,
+        );
+        break;
+    }
+    const element = resizeEvent.source.element.nativeElement;
+    element.style.transform = 'none';
+  }
 }

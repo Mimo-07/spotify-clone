@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccessTokenService } from '../../auth/access-token.service';
 import { LoginResponse } from '../../auth/auth.interface';
+import { AuthService } from '../../auth/auth-service';
 
 @Component({
   selector: 'main-page',
@@ -12,6 +13,7 @@ import { LoginResponse } from '../../auth/auth.interface';
 export class MainPageComponent implements OnInit {
   #router = inject(Router);
   #tokenService = inject(AccessTokenService);
+  #authService = inject(AuthService);
 
   ngOnInit(): void {
     const previousState = localStorage.getItem('auth_state');
@@ -28,6 +30,7 @@ export class MainPageComponent implements OnInit {
         this.#tokenService.getToken(returnedCode, previousVerifier).subscribe({
           next: (response: LoginResponse) => {
             console.log(response);
+            this.#authService.isLoggedIn.set(true);
           },
         });
       }
