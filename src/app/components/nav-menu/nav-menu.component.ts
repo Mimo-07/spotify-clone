@@ -29,4 +29,8 @@ export class NavMenuComponent {
       displayName: 'Podcasts & Shows',
     },
   ];
+
+  selectedChip(chip: TitleChip): void {
+    console.log(chip);
+  }
 }

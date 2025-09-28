@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, output } from '@angular/core';
 import { TitleChip } from './chip.interface';
 import { MatChipsModule } from '@angular/material/chips';
 
@@ -10,4 +10,10 @@ import { MatChipsModule } from '@angular/material/chips';
 })
 export class TitleChipsComponent {
   @Input({ required: true }) titleChips!: TitleChip[];
+
+  selectedChip = output<TitleChip>();
+
+  onSelectChip(chip: TitleChip): void {
+    this.selectedChip.emit(chip);
+  }
 }

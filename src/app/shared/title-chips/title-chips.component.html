@@ -1,5 +1,5 @@
 <mat-chip-set>
   @for (chip of titleChips; track chip.id) {
-    <mat-chip>{{ chip.displayName }}</mat-chip>
+    <mat-chip (click)="onSelectChip(chip)">{{ chip.displayName }}</mat-chip>
   }
 </mat-chip-set>
