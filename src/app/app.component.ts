@@ -6,6 +6,8 @@ import { AuthService } from './auth/auth-service';
 import { CurrentPlayerComponent } from './components/current-player/current-player.component';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { AppBarComponent } from './components/app-bar/app-bar.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AccessTokenInterceptor } from './services/access-token.interceptor';
 
 @Component({
   selector: 'app-root',

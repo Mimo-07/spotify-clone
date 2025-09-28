@@ -29,8 +29,8 @@ export class MainPageComponent implements OnInit {
       } else {
         this.#tokenService.getToken(returnedCode, previousVerifier).subscribe({
           next: (response: LoginResponse) => {
-            console.log(response);
             this.#authService.isLoggedIn.set(true);
+            this.#tokenService.accessTokenResponse.set(response);
           },
         });
       }

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { TitleChip } from '../../shared/title-chips/chip.interface';
 import { TitleChipsComponent } from '../../shared/title-chips/title-chips.component';
+import { SpotifyClientClient } from '../../spotify-client/spotify-client.client';
 
 @Component({
   selector: 'nav-menu',
@@ -30,7 +31,13 @@ export class NavMenuComponent {
     },
   ];
 
+  readonly #spotifyClient = inject(SpotifyClientClient);
+
   selectedChip(chip: TitleChip): void {
-    console.log(chip);
+    // TODO: create a menu service which will handle these fetching calls from spotify client and remove spotify client usage from here
+    // only added here for testing purpose
+    this.#spotifyClient.getCurrentUserPlaylist().subscribe({
+      next: (response) => console.log(response),
+    });
   }
 }

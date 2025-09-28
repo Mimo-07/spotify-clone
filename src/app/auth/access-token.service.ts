@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { clientId, LoginResponse, spotifyUrl } from './auth.interface';
 import { Observable } from 'rxjs';
 
@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 })
 export class AccessTokenService {
   readonly #http = inject(HttpClient);
+
+  accessTokenResponse = signal<LoginResponse>({});
 
   getToken(code: string, codeVerifier: string): Observable<LoginResponse> {
     const apiUrl = spotifyUrl + `/api/token`;
