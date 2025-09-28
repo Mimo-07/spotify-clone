@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+.mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.home {
+  padding-inline: 8px;
+}
+
+.profile {
+  display: flex;
+  gap: 8px;
+  padding-inline: 8px 8px;
+}
+
+.input-field {
+  width: 30vw;
+}
