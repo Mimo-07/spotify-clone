@@ -13,17 +13,9 @@
   </div>
   <list-container>
     <mat-list>
-      <mat-list-item>
-        <p matListItemLine>demo</p>
-        <h4 matListItemLine>h4</h4>
-      </mat-list-item>
-      <!-- <mat-list-item>
-        <p matListItemLine>demo</p>
-        <h4 matListItemLine>h4</h4>
-      </mat-list-item>
-      <mat-list-item>
-        <p matListItemLine>demo</p>
-      </mat-list-item> -->
+      @for (playlist of fetchCurrentUserPlaylists$ | async; track playlist.id) {
+        <mat-list-item> {{ playlist.name }} </mat-list-item>
+      }
     </mat-list>
   </list-container>
 </section>

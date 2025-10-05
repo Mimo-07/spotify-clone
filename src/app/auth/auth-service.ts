@@ -12,6 +12,8 @@ export class AuthService {
     this.#redirectToAuthCodeFlow();
   }
 
+  readonly #scope: string = `playlist-read-private user-follow-read`;
+
   async #redirectToAuthCodeFlow() {
     const authState = generateRandomString(16);
     const codeVerifier: string = generateRandomString(128);
@@ -25,7 +27,7 @@ export class AuthService {
     const params = {
       response_type: 'code',
       client_id: clientId,
-      // scope:,
+      scope: this.#scope,
       code_challenge_method: 'S256',
       state: authState,
       code_challenge: codeChallenge,
