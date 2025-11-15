@@ -1,5 +1,11 @@
 <section>
-  Your Library
+  <div class="first-row">
+    <span>Your Library</span>
+    <button>
+      <span class="material-symbols-outlined"> add </span>
+      <span>Create</span>
+    </button>
+  </div>
   <title-chips
     [titleChips]="navmenuChips"
     (selectedChip)="selectedChip($event)"
@@ -14,7 +20,15 @@
   <list-container>
     <mat-list>
       @for (playlist of fetchCurrentUserPlaylists$ | async; track playlist.id) {
-        <mat-list-item> {{ playlist.name }} </mat-list-item>
+        <item>
+          <div ngProjectAs="list-item" class="list-item">
+            <img [src]="playlist.images[0].url" height="60" width="60" />
+            <div class="details">
+              {{ playlist.name }}
+            </div>
+          </div>
+        </item>
+        <!-- <mat-list-item> {{ playlist.name }} </mat-list-item> -->
       }
     </mat-list>
   </list-container>

@@ -5,11 +5,18 @@ import { TitleChipsComponent } from '../../shared/title-chips/title-chips.compon
 import { ListComponent } from '../../shared/list/list.component';
 import { SpotifyWebHelperService } from '../../services/spotify-web-helper.service';
 import { AsyncPipe } from '@angular/common';
+import { ItemComponent } from '../../shared/item/item.component';
 
 @Component({
   selector: 'nav-menu',
   standalone: true,
-  imports: [MatListModule, TitleChipsComponent, ListComponent, AsyncPipe],
+  imports: [
+    MatListModule,
+    TitleChipsComponent,
+    ListComponent,
+    ItemComponent,
+    AsyncPipe,
+  ],
   templateUrl: './nav-menu.component.html',
   styleUrl: './nav-menu.component.scss',
 })

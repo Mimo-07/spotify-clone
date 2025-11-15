@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { SpotifyClient } from '../spotify-client/spotify-client';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import {
   Playlist,
   PlaylistApiResponse,
@@ -18,9 +18,10 @@ export class SpotifyWebHelperService {
   readonly #spotifyClient = inject(SpotifyClient);
 
   fetchCurrentUserPlaylists(): Observable<Playlist[]> {
-    return this.#spotifyClient
-      .getCurrentUserPlaylist()
-      .pipe(map((response: PlaylistApiResponse) => response.items));
+    return this.#spotifyClient.getCurrentUserPlaylist().pipe(
+      map((response: PlaylistApiResponse) => response.items),
+      tap((responseItems) => console.log(responseItems)),
+    );
   }
 
   fetchCurrentUserFollowedArtists(): Observable<Artist[]> {
