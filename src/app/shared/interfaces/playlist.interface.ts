@@ -1,9 +1,9 @@
-import { Image } from './base.interface';
+import { ExternalUrls, Image } from './base.interface';
 
 export interface Playlist {
   collaborative: boolean;
   description: string;
-  external_urls: object;
+  external_urls: ExternalUrls;
   href: string;
   id: string;
   images: Image[];
