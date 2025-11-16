@@ -6,6 +6,8 @@ import { ListComponent } from '../../shared/list/list.component';
 import { SpotifyWebHelperService } from '../../services/spotify-web-helper.service';
 import { AsyncPipe } from '@angular/common';
 import { ItemComponent } from '../../shared/item/item.component';
+import { forkJoin, map } from 'rxjs';
+import { Item } from '../../shared/interfaces/ui/item.interface';
 
 @Component({
   selector: 'nav-menu',
@@ -47,6 +49,35 @@ export class NavMenuComponent {
 
   fetchCurrentUserFollowedArtists$ =
     this.#spotifyWebHelper.fetchCurrentUserFollowedArtists();
+
+  fetchNavMenuItems$ = forkJoin([
+    this.#spotifyWebHelper.fetchCurrentUserPlaylists(),
+    this.#spotifyWebHelper.fetchCurrentUserFollowedArtists(),
+    this.#spotifyWebHelper.fetchCurrentUserSavedAlbums(),
+  ]).pipe(
+    map((responseArray) => {
+      // const changedResponse: Item[]
+      const changedResponse = responseArray.flatMap((eachResponse) =>
+        eachResponse.map((eachItem) => {
+          const changedItem: Item = {} as Item;
+
+          changedItem.id = eachItem.id;
+          changedItem.name = eachItem.name;
+          changedItem.type = eachItem.type;
+          if ('owner' in eachItem) {
+            console.log(eachItem.owner);
+            // eachItem.type === RecordType.PLAYLIST
+            changedItem.displayName = eachItem.owner?.display_name;
+          }
+          changedItem.image = eachItem.images[0];
+
+          return changedItem;
+        }),
+      );
+
+      return changedResponse;
+    }),
+  );
 
   selectedChip(chip: TitleChip): void {
     // TODO: create a menu service which will handle these fetching calls from spotify client and remove spotify client usage from here

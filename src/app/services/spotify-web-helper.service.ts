@@ -10,6 +10,11 @@ import {
   Artist,
   FollowedArtistsApiResponse,
 } from '../shared/interfaces/artist.interface';
+import {
+  Album,
+  SavedAlbum,
+  SavedAlbumsApiResponse,
+} from '../shared/interfaces/albums.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -32,5 +37,15 @@ export class SpotifyWebHelperService {
       .pipe(
         map((response: FollowedArtistsApiResponse) => response.artists.items),
       );
+  }
+
+  fetchCurrentUserSavedAlbums(): Observable<Album[]> {
+    return this.#spotifyClient.getCurrentUserSavedAlbums().pipe(
+      map((response: SavedAlbumsApiResponse) => response.items),
+      // deconstructing array of SavedAlbum then proceeding to emit only album property of SavedAlbum object excluding added_at property
+      map((deconstructRes: SavedAlbum[]) =>
+        deconstructRes.map((item) => item.album),
+      ),
+    );
   }
 }

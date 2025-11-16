@@ -12,7 +12,7 @@ export class AuthService {
     this.#redirectToAuthCodeFlow();
   }
 
-  readonly #scope: string = `playlist-read-private user-follow-read`;
+  readonly #scope: string = `playlist-read-private user-follow-read user-library-read`;
 
   async #redirectToAuthCodeFlow() {
     const authState = generateRandomString(16);

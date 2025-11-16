@@ -1,4 +1,4 @@
-import { ExternalUrls, Image } from './base.interface';
+import { ExternalUrls, Image, Owner, RecordType } from './base.interface';
 
 export interface Playlist {
   collaborative: boolean;
@@ -8,11 +8,11 @@ export interface Playlist {
   id: string;
   images: Image[];
   name: string;
-  owner: string;
+  owner: Owner;
   public: boolean;
   snapshot_id: string;
   tracks: object;
-  type: string;
+  type: RecordType;
   uri: string;
 }
 

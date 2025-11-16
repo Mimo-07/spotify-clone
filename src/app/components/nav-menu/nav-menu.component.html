@@ -19,12 +19,14 @@
   </div>
   <list-container>
     <mat-list>
-      @for (playlist of fetchCurrentUserPlaylists$ | async; track playlist.id) {
+      @for (item of fetchNavMenuItems$ | async; track item.id) {
         <item>
           <div ngProjectAs="list-item" class="list-item">
-            <img [src]="playlist.images[0].url" height="60" width="60" />
+            <img [src]="item.image?.url" height="60" width="60" />
             <div class="details">
-              {{ playlist.name }}
+              {{ item.name }}
+              <br />
+              {{ item.type }} {{ item.displayName }}
             </div>
           </div>
         </item>
