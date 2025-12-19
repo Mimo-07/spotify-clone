@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  margin-block-start: 1rem;
+
+  .panel.left {
+    border: 1px solid red;
+  }
+
+  .panel.middle {
+    flex: 1;
+    border: 1px solid yellow;
+  }
+
+  .panel.right {
+    border: 1px solid green;
+  }
+}

@@ -1,9 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { AccessTokenService } from '../../auth/access-token.service';
-import { LoginResponse, TokenType } from '../../auth/auth.interface';
-import { AuthService } from '../../auth/auth-service';
 import { TitleChip } from '../../shared/title-chips/chip.interface';
 import { TitleChipsComponent } from '../../shared/title-chips/title-chips.component';
 
@@ -14,10 +10,6 @@ import { TitleChipsComponent } from '../../shared/title-chips/title-chips.compon
   styleUrl: './main-page.component.scss',
 })
 export class MainPageComponent implements OnInit {
-  #router = inject(Router);
-  #tokenService = inject(AccessTokenService);
-  #authService = inject(AuthService);
-
   mainPageChips: TitleChip[] = [
     {
       id: 'all',
@@ -34,35 +26,41 @@ export class MainPageComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    const previousState = localStorage.getItem('auth_state');
-    const previousVerifier = localStorage.getItem('code_verifier');
-
-    const returnedData = new URLSearchParams(window.location.search);
-    const returnedState = returnedData.get('state');
-    const returnedCode = returnedData.get('code');
-
-    if (previousState && previousVerifier && returnedState && returnedCode) {
-      if (returnedState != previousState) {
-        this.#router.navigate(['login']);
-      } else {
-        this.#tokenService.getToken(returnedCode, previousVerifier).subscribe({
-          next: (response: LoginResponse) => {
-            if (response.access_token) {
-              sessionStorage.setItem(
-                TokenType.ACCESS_TOKEN,
-                response.access_token,
-              );
-            }
-            if (response.refresh_token) {
-              sessionStorage.setItem(
-                TokenType.REFRESH_TOKEN,
-                response.refresh_token,
-              );
-            }
-            this.#authService.isLoggedIn.set(true);
-          },
-        });
-      }
-    }
+    // const previousState = localStorage.getItem('auth_state');
+    // const previousVerifier = localStorage.getItem('code_verifier');
+    // const returnedData = new URLSearchParams(window.location.search);
+    // const returnedState = returnedData.get('state');
+    // const returnedCode = returnedData.get('code');
+    // if (previousState && previousVerifier && returnedState && returnedCode) {
+    //   if (returnedState != previousState) {
+    //     this.#router.navigate(['login']);
+    //   } else {
+    //     this.#tokenService.getToken(returnedCode, previousVerifier).subscribe({
+    //       next: (response: LoginResponse) => {
+    //         if (response.access_token) {
+    //           sessionStorage.setItem(
+    //             TokenType.ACCESS_TOKEN,
+    //             response.access_token,
+    //           );
+    //         }
+    //         if (response.refresh_token) {
+    //           sessionStorage.setItem(
+    //             TokenType.REFRESH_TOKEN,
+    //             response.refresh_token,
+    //           );
+    //         }
+    //         this.#router
+    //           .navigate(['/'], {
+    //             queryParams: {},
+    //             onSameUrlNavigation: 'reload',
+    //             skipLocationChange: true,
+    //           })
+    //           .then(() => {
+    //             this.#router.navigate(['/home']);
+    //           });
+    //       },
+    //     });
+    //   }
+    // }
   }
 }
