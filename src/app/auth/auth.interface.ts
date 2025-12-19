@@ -8,3 +8,8 @@ export interface LoginResponse {
 
 export const spotifyUrl = `https://accounts.spotify.com`;
 export const clientId = 'b2d05899662949fa98def1614cb83b8c';
+
+export enum TokenType {
+  ACCESS_TOKEN = 'access-token',
+  REFRESH_TOKEN = 'refresh-token',
+}

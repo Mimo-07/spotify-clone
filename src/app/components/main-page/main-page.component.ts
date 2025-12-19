@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { AccessTokenService } from '../../auth/access-token.service';
-import { LoginResponse } from '../../auth/auth.interface';
+import { LoginResponse, TokenType } from '../../auth/auth.interface';
 import { AuthService } from '../../auth/auth-service';
 import { TitleChip } from '../../shared/title-chips/chip.interface';
 import { TitleChipsComponent } from '../../shared/title-chips/title-chips.component';
@@ -47,8 +47,19 @@ export class MainPageComponent implements OnInit {
       } else {
         this.#tokenService.getToken(returnedCode, previousVerifier).subscribe({
           next: (response: LoginResponse) => {
+            if (response.access_token) {
+              sessionStorage.setItem(
+                TokenType.ACCESS_TOKEN,
+                response.access_token,
+              );
+            }
+            if (response.refresh_token) {
+              sessionStorage.setItem(
+                TokenType.REFRESH_TOKEN,
+                response.refresh_token,
+              );
+            }
             this.#authService.isLoggedIn.set(true);
-            this.#tokenService.accessTokenResponse.set(response);
           },
         });
       }
