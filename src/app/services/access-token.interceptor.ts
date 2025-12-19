@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -6,24 +6,19 @@ import {
   HttpInterceptor,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AccessTokenService } from '../auth/access-token.service';
+import { TokenType } from '../auth/auth.interface';
 
 @Injectable()
 export class AccessTokenInterceptor implements HttpInterceptor {
-  readonly #accessTokenService = inject(AccessTokenService);
-
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    const accessTokenResponse = this.#accessTokenService.accessTokenResponse();
+    const accessToken = sessionStorage.getItem(TokenType.ACCESS_TOKEN);
 
-    if (!request.url.endsWith('/api/token')) {
+    if (!request.url.endsWith('/api/token') && accessToken) {
       const reqWithHeader = request.clone({
-        headers: request.headers.set(
-          'Authorization',
-          `${accessTokenResponse.token_type} ${accessTokenResponse.access_token}`,
-        ),
+        headers: request.headers.set('Authorization', `Bearer ${accessToken}`),
       });
 
       return next.handle(reqWithHeader);

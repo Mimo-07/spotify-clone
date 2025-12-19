@@ -9,8 +9,6 @@ import { Observable } from 'rxjs';
 export class AccessTokenService {
   readonly #http = inject(HttpClient);
 
-  accessTokenResponse = signal<LoginResponse>({});
-
   getToken(code: string, codeVerifier: string): Observable<LoginResponse> {
     const apiUrl = spotifyUrl + `/api/token`;
 

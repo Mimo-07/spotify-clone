@@ -5,3 +5,5 @@ This web application is based on [Spotify API](https://developer.spotify.com/doc
 To develop application hosting url must be same as the redirect-uri mentioned in the reference.
 
 ![request an access token spotify documentation on pkce auth](<request an access token.png>)
+
+Serve command: `ng serve --host=127.0.0.1`

@@ -6,8 +6,6 @@ import { clientId, spotifyUrl } from './auth.interface';
   providedIn: 'root',
 })
 export class AuthService {
-  isLoggedIn = signal<boolean>(false);
-
   startAuth() {
     this.#redirectToAuthCodeFlow();
   }
