@@ -6,6 +6,14 @@ import {
   FollowedArtistsApiResponse,
   GetFollowedArtistsRequest,
 } from '../shared/interfaces/artist.interface';
+import { SavedAlbumsApiResponse } from '../shared/interfaces/albums.interface';
+
+interface SpotifyEndpointKeys {
+  CURRENT_USER_PLAYLIST?: string;
+  CURRENT_USER_FOLLOWED_ARTISTS?: string;
+  CURRENT_USER_SAVED_ALBUMS?: string;
+  CURRENT_USER_SAVED_PODCASTS?: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -14,16 +22,16 @@ export class SpotifyClient {
   readonly #apiBaseUrl = `https://api.spotify.com/v1`;
   readonly #http = inject(HttpClient);
 
-  readonly #endpointRecord: Record<string, string> = {
+  readonly #endpointRecord: SpotifyEndpointKeys = {
     CURRENT_USER_PLAYLIST: `/me/playlists`,
-    USER_FOLLOWED_ARTISTS: `/me/following`,
+    CURRENT_USER_FOLLOWED_ARTISTS: `/me/following`,
     CURRENT_USER_SAVED_ALBUMS: `/me/albums`,
     CURRENT_USER_SAVED_PODCASTS: `/me/audiobooks`,
   };
 
   getCurrentUserPlaylist(params?: HttpParams): Observable<PlaylistApiResponse> {
     const endpointUrl =
-      this.#apiBaseUrl + this.#endpointRecord['CURRENT_USER_PLAYLIST'];
+      this.#apiBaseUrl + this.#endpointRecord.CURRENT_USER_PLAYLIST;
 
     if (params) {
       return this.#http.get<PlaylistApiResponse>(endpointUrl, { params });
@@ -35,7 +43,7 @@ export class SpotifyClient {
     params?: HttpParams,
   ): Observable<FollowedArtistsApiResponse> {
     const endpointUrl =
-      this.#apiBaseUrl + this.#endpointRecord['USER_FOLLOWED_ARTISTS'];
+      this.#apiBaseUrl + this.#endpointRecord.CURRENT_USER_FOLLOWED_ARTISTS;
 
     if (params) {
       return this.#http.get<FollowedArtistsApiResponse>(endpointUrl, {
@@ -44,5 +52,18 @@ export class SpotifyClient {
     }
 
     return this.#http.get<FollowedArtistsApiResponse>(endpointUrl);
+  }
+
+  getCurrentUserSavedAlbums(
+    params?: HttpParams,
+  ): Observable<SavedAlbumsApiResponse> {
+    const endpointUrl =
+      this.#apiBaseUrl + this.#endpointRecord.CURRENT_USER_SAVED_ALBUMS;
+
+    if (params) {
+      return this.#http.get<SavedAlbumsApiResponse>(endpointUrl, { params });
+    }
+
+    return this.#http.get<SavedAlbumsApiResponse>(endpointUrl);
   }
 }

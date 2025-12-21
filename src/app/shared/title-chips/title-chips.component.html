@@ -1,5 +1,7 @@
-<mat-chip-set>
+<mat-chip-listbox>
   @for (chip of titleChips; track chip.id) {
-    <mat-chip (click)="onSelectChip(chip)">{{ chip.displayName }}</mat-chip>
+    <mat-chip-option (click)="onSelectChip(chip)">{{
+      chip.displayName
+    }}</mat-chip-option>
   }
-</mat-chip-set>
+</mat-chip-listbox>

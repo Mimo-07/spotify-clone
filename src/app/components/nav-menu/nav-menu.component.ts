@@ -5,47 +5,128 @@ import { TitleChipsComponent } from '../../shared/title-chips/title-chips.compon
 import { ListComponent } from '../../shared/list/list.component';
 import { SpotifyWebHelperService } from '../../services/spotify-web-helper.service';
 import { AsyncPipe } from '@angular/common';
+import { ItemComponent } from '../../shared/item/item.component';
+import { BehaviorSubject, EMPTY, forkJoin, map, Observable } from 'rxjs';
+import { Item } from '../../shared/interfaces/ui/item.interface';
+import { Playlist } from '../../shared/interfaces/playlist.interface';
+import { Artist } from '../../shared/interfaces/artist.interface';
+import { Album } from '../../shared/interfaces/albums.interface';
+import { RecordType } from '../../shared/interfaces/base.interface';
 
 @Component({
   selector: 'nav-menu',
   standalone: true,
-  imports: [MatListModule, TitleChipsComponent, ListComponent, AsyncPipe],
+  imports: [
+    MatListModule,
+    TitleChipsComponent,
+    ListComponent,
+    ItemComponent,
+    AsyncPipe,
+  ],
   templateUrl: './nav-menu.component.html',
   styleUrl: './nav-menu.component.scss',
 })
-export class NavMenuComponent {
+export class NavMenuComponent implements OnInit {
   navmenuChips: TitleChip[] = [
     {
-      id: 'playlists',
+      id: RecordType.PLAYLIST,
       displayName: 'Playlists',
     },
     {
-      id: 'artists',
+      id: RecordType.ARTIST,
       displayName: 'Artists',
     },
     {
-      id: 'albums',
+      id: RecordType.ALBUM,
       displayName: 'Albums',
     },
     {
-      id: 'audiobooks',
+      id: RecordType.AUDIOBOOK,
       displayName: 'Podcasts & Shows',
     },
   ];
+  fetchNavMenuItems$!: Observable<Item[]>;
 
   readonly #spotifyWebHelper = inject(SpotifyWebHelperService);
 
-  fetchCurrentUserPlaylists$ =
-    this.#spotifyWebHelper.fetchCurrentUserPlaylists();
+  #allselected: TitleChip = {
+    id: RecordType.ALL,
+    displayName: 'All',
+  };
+  #selectedChip = new BehaviorSubject<TitleChip>(this.#allselected);
 
-  fetchCurrentUserFollowedArtists$ =
-    this.#spotifyWebHelper.fetchCurrentUserFollowedArtists();
+  ngOnInit(): void {
+    this.#selectedChip.subscribe((selected) => {
+      if (selected.id === RecordType.ALL) {
+        this.fetchNavMenuItems$ = forkJoin([
+          this.#spotifyWebHelper.fetchCurrentUserPlaylists(),
+          this.#spotifyWebHelper.fetchCurrentUserFollowedArtists(),
+          this.#spotifyWebHelper.fetchCurrentUserSavedAlbums(),
+        ]).pipe(
+          map((responseArray) => {
+            return this.#processFetchedItemsForUI(responseArray);
+          }),
+        );
+      } else if (selected.id === RecordType.ALBUM) {
+        this.fetchNavMenuItems$ = this.#spotifyWebHelper
+          .fetchCurrentUserSavedAlbums()
+          .pipe(
+            map((responseArray) =>
+              this.#processFetchedItemsForUI([responseArray]),
+            ),
+          );
+      } else if (selected.id === RecordType.PLAYLIST) {
+        this.fetchNavMenuItems$ = this.#spotifyWebHelper
+          .fetchCurrentUserPlaylists()
+          .pipe(
+            map((responseArray) =>
+              this.#processFetchedItemsForUI([responseArray]),
+            ),
+          );
+      } else if (selected.id === RecordType.ARTIST) {
+        this.fetchNavMenuItems$ = this.#spotifyWebHelper
+          .fetchCurrentUserFollowedArtists()
+          .pipe(
+            map((responseArray) =>
+              this.#processFetchedItemsForUI([responseArray]),
+            ),
+          );
+      }
+    });
+  }
 
   selectedChip(chip: TitleChip): void {
-    // TODO: create a menu service which will handle these fetching calls from spotify client and remove spotify client usage from here
-    // only added here for testing purpose
-    // this.#spotifyClient.getCurrentUserPlaylist().subscribe({
-    //   next: (response) => console.log(response),
-    // });
+    this.#selectedChip.next(chip);
+  }
+
+  /**
+   *
+   * @param responseArray an array of array containing spotify specific record details
+   * @returns Item[] an array of items corresponding to the properties we maintain for the ui to show relevant info
+   */
+  #processFetchedItemsForUI(
+    responseArray:
+      | [Playlist[]]
+      | [Artist[]]
+      | [Album[]]
+      | [Playlist[], Artist[], Album[]],
+  ): Item[] {
+    return responseArray.flatMap((eachResponse) =>
+      eachResponse.map((eachItem) => {
+        const changedItem: Item = {} as Item;
+
+        changedItem.id = eachItem.id;
+        changedItem.name = eachItem.name;
+        changedItem.type = eachItem.type;
+        if ('owner' in eachItem) {
+          console.log(eachItem.owner);
+          // eachItem.type === RecordType.PLAYLIST
+          changedItem.displayName = eachItem.owner?.display_name;
+        }
+        changedItem.image = eachItem.images[0];
+
+        return changedItem;
+      }),
+    );
   }
 }

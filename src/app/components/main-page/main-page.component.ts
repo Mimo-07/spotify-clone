@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { TitleChip } from '../../shared/title-chips/chip.interface';
 import { TitleChipsComponent } from '../../shared/title-chips/title-chips.component';
+import { RecordType } from '../../shared/interfaces/base.interface';
 
 @Component({
   selector: 'main-page',
@@ -12,15 +13,15 @@ import { TitleChipsComponent } from '../../shared/title-chips/title-chips.compon
 export class MainPageComponent implements OnInit {
   mainPageChips: TitleChip[] = [
     {
-      id: 'all',
+      id: RecordType.ALL,
       displayName: 'All',
     },
     {
-      id: 'music',
+      id: RecordType.MUSIC,
       displayName: 'Music',
     },
     {
-      id: 'audiobooks',
+      id: RecordType.AUDIOBOOK,
       displayName: 'Podcasts',
     },
   ];
