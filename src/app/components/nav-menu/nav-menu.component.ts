@@ -64,26 +64,32 @@ export class NavMenuComponent implements OnInit {
           this.#spotifyWebHelper.fetchCurrentUserSavedAlbums(),
         ]).pipe(
           map((responseArray) => {
-            return this.#processFetchedItems(responseArray);
+            return this.#processFetchedItemsForUI(responseArray);
           }),
         );
       } else if (selected.id === RecordType.ALBUM) {
         this.fetchNavMenuItems$ = this.#spotifyWebHelper
           .fetchCurrentUserSavedAlbums()
           .pipe(
-            map((responseArray) => this.#processFetchedItems([responseArray])),
+            map((responseArray) =>
+              this.#processFetchedItemsForUI([responseArray]),
+            ),
           );
       } else if (selected.id === RecordType.PLAYLIST) {
         this.fetchNavMenuItems$ = this.#spotifyWebHelper
           .fetchCurrentUserPlaylists()
           .pipe(
-            map((responseArray) => this.#processFetchedItems([responseArray])),
+            map((responseArray) =>
+              this.#processFetchedItemsForUI([responseArray]),
+            ),
           );
       } else if (selected.id === RecordType.ARTIST) {
         this.fetchNavMenuItems$ = this.#spotifyWebHelper
           .fetchCurrentUserFollowedArtists()
           .pipe(
-            map((responseArray) => this.#processFetchedItems([responseArray])),
+            map((responseArray) =>
+              this.#processFetchedItemsForUI([responseArray]),
+            ),
           );
       }
     });
@@ -93,7 +99,12 @@ export class NavMenuComponent implements OnInit {
     this.#selectedChip.next(chip);
   }
 
-  #processFetchedItems(
+  /**
+   *
+   * @param responseArray an array of array containing spotify specific record details
+   * @returns Item[] an array of items corresponding to the properties we maintain for the ui to show relevant info
+   */
+  #processFetchedItemsForUI(
     responseArray:
       | [Playlist[]]
       | [Artist[]]
