@@ -8,6 +8,9 @@ export enum RecordType {
   ALBUM = 'album',
   ARTIST = 'artist',
   PLAYLIST = 'playlist',
+  AUDIOBOOK = 'podcast',
+  MUSIC = 'music',
+  ALL = 'all',
 }
 
 export interface ExternalUrls {

@@ -1,4 +1,6 @@
+import { RecordType } from '../interfaces/base.interface';
+
 export interface TitleChip {
-  id: string;
+  id: RecordType;
   displayName: string;
 }

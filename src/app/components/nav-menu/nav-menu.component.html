@@ -22,11 +22,19 @@
       @for (item of fetchNavMenuItems$ | async; track item.id) {
         <item>
           <div ngProjectAs="list-item" class="list-item">
-            <img [src]="item.image?.url" height="60" width="60" />
+            <div class="image">
+              <img [src]="item.image?.url" height="60" width="60" />
+            </div>
             <div class="details">
-              {{ item.name }}
+              <div class="name">{{ item.name }}</div>
               <br />
-              {{ item.type }} {{ item.displayName }}
+              <div class="subtext">
+                {{ item.type }}
+                @if (item.displayName) {
+                  •
+                  {{ item.displayName }}
+                }
+              </div>
             </div>
           </div>
         </item>
