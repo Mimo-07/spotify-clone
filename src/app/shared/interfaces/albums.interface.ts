@@ -1,17 +1,17 @@
 import { SimplifiedArtist } from './artist.interface';
-import { ExternalUrls, Image, RecordType } from './base.interface';
+import {
+  BaseApiResponse,
+  ExternalUrls,
+  Image,
+  RecordType,
+  RestrictionReason,
+} from './base.interface';
 import { SimplifiedTrack, UserSavedTracksApiResponse } from './track.interface';
 
 export enum AlbumType {
   ALBUM = 'album',
   SINGLE = 'single',
   COMPILATION = 'compilation',
-}
-
-export enum RestrictionReason {
-  MARKET = 'market',
-  PRODUCT = 'product',
-  EXPLICIT = 'explicit',
 }
 
 export type AlbumTracks = Pick<
@@ -31,7 +31,7 @@ export interface Album {
   release_date: string;
   release_date_precision: string;
   restrictions: { reason: RestrictionReason };
-  type: RecordType;
+  type: RecordType.ALBUM;
   uri: string;
   artists: SimplifiedArtist[];
   tracks: AlbumTracks;
@@ -46,12 +46,4 @@ export interface SavedAlbum {
   album: Album;
 }
 
-export interface SavedAlbumsApiResponse {
-  href: string;
-  limit: number;
-  next: string;
-  previous: string;
-  offset: number;
-  total: number;
-  items: SavedAlbum[];
-}
+export type SavedAlbumsApiResponse = BaseApiResponse<SavedAlbum>;

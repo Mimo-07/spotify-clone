@@ -1,4 +1,4 @@
-import { ExternalUrls, Image, RecordType } from './base.interface';
+import { Cursor, ExternalUrls, Image, RecordType } from './base.interface';
 
 export interface GetFollowedArtistsRequest {
   type: RecordType;
@@ -8,14 +8,14 @@ export interface GetFollowedArtistsRequest {
 
 export interface Artist {
   external_urls: ExternalUrls;
-  followers: object;
+  followers: Followers;
   genres: string[];
   href: string;
   id: string;
   images: Image[];
   name: string;
   popularity: number;
-  type: RecordType;
+  type: RecordType.ARTIST;
   uri: string;
 }
 
@@ -23,7 +23,7 @@ export interface FollowedArtistsResponse {
   href: string;
   limit: number;
   next: string;
-  cursors: object;
+  cursors: Cursor;
   total: number;
   items: Artist[];
 }
@@ -36,3 +36,8 @@ export type SimplifiedArtist = Pick<
   Artist,
   'external_urls' | 'href' | 'id' | 'name' | 'type' | 'uri'
 >;
+
+interface Followers {
+  href: string | null;
+  total: number;
+}

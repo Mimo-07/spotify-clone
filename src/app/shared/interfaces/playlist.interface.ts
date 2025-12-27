@@ -1,4 +1,10 @@
-import { ExternalUrls, Image, Owner, RecordType } from './base.interface';
+import {
+  BaseApiResponse,
+  ExternalUrls,
+  Image,
+  Owner,
+  RecordType,
+} from './base.interface';
 
 export interface Playlist {
   collaborative: boolean;
@@ -12,15 +18,8 @@ export interface Playlist {
   public: boolean;
   snapshot_id: string;
   tracks: object;
-  type: RecordType;
+  type: RecordType.PLAYLIST;
   uri: string;
 }
 
-export interface PlaylistApiResponse {
-  href: string;
-  limit: number;
-  next: string;
-  offset: string;
-  total: number;
-  items: Playlist[];
-}
+export type PlaylistApiResponse = BaseApiResponse<Playlist>;
