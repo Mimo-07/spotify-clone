@@ -17,7 +17,7 @@ export class MainPageComponent implements OnInit {
       displayName: 'All',
     },
     {
-      id: RecordType.MUSIC,
+      id: RecordType.ALBUM,
       displayName: 'Music',
     },
     {

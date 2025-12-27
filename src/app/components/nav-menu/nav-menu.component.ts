@@ -91,6 +91,14 @@ export class NavMenuComponent implements OnInit {
               this.#processFetchedItemsForUI([responseArray]),
             ),
           );
+      } else {
+        this.fetchNavMenuItems$ = this.#spotifyWebHelper
+          .fetchCurrentUserSavedAudibooks()
+          .pipe(
+            map((responseArray) =>
+              this.#processFetchedItemsForUI([responseArray]),
+            ),
+          );
       }
     });
   }
@@ -119,7 +127,6 @@ export class NavMenuComponent implements OnInit {
         changedItem.name = eachItem.name;
         changedItem.type = eachItem.type;
         if ('owner' in eachItem) {
-          console.log(eachItem.owner);
           // eachItem.type === RecordType.PLAYLIST
           changedItem.displayName = eachItem.owner?.display_name;
         }

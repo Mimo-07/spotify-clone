@@ -9,7 +9,6 @@ export enum RecordType {
   ARTIST = 'artist',
   PLAYLIST = 'playlist',
   AUDIOBOOK = 'podcast',
-  MUSIC = 'music',
   ALL = 'all',
 }
 

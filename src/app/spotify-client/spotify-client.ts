@@ -66,4 +66,15 @@ export class SpotifyClient {
 
     return this.#http.get<SavedAlbumsApiResponse>(endpointUrl);
   }
+
+  getCurrentUserSavedAudiobooks(params?: HttpParams): Observable<any> {
+    const endpointUrl =
+      this.#apiBaseUrl + this.#endpointRecord.CURRENT_USER_SAVED_PODCASTS;
+
+    if (params) {
+      return this.#http.get(endpointUrl, { params });
+    }
+
+    return this.#http.get(endpointUrl);
+  }
 }
