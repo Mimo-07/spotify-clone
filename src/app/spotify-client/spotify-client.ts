@@ -2,11 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PlaylistApiResponse } from '../shared/interfaces/playlist.interface';
-import {
-  FollowedArtistsApiResponse,
-  GetFollowedArtistsRequest,
-} from '../shared/interfaces/artist.interface';
+import { FollowedArtistsApiResponse } from '../shared/interfaces/artist.interface';
 import { SavedAlbumsApiResponse } from '../shared/interfaces/albums.interface';
+import { GetUserSavedAudiobooksApiResponse } from '../shared/interfaces/audiobooks.interface';
 
 interface SpotifyEndpointKeys {
   CURRENT_USER_PLAYLIST?: string;
@@ -67,14 +65,18 @@ export class SpotifyClient {
     return this.#http.get<SavedAlbumsApiResponse>(endpointUrl);
   }
 
-  getCurrentUserSavedAudiobooks(params?: HttpParams): Observable<any> {
+  getCurrentUserSavedAudiobooks(
+    params?: HttpParams,
+  ): Observable<GetUserSavedAudiobooksApiResponse> {
     const endpointUrl =
       this.#apiBaseUrl + this.#endpointRecord.CURRENT_USER_SAVED_PODCASTS;
 
     if (params) {
-      return this.#http.get(endpointUrl, { params });
+      return this.#http.get<GetUserSavedAudiobooksApiResponse>(endpointUrl, {
+        params,
+      });
     }
 
-    return this.#http.get(endpointUrl);
+    return this.#http.get<GetUserSavedAudiobooksApiResponse>(endpointUrl);
   }
 }

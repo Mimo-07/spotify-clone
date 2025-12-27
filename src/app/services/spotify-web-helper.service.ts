@@ -15,6 +15,7 @@ import {
   SavedAlbum,
   SavedAlbumsApiResponse,
 } from '../shared/interfaces/albums.interface';
+import { SimplifiedAudiobook } from '../shared/interfaces/audiobooks.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +49,7 @@ export class SpotifyWebHelperService {
     );
   }
 
-  fetchCurrentUserSavedAudibooks(): Observable<any> {
+  fetchCurrentUserSavedAudibooks(): Observable<SimplifiedAudiobook[]> {
     return this.#spotifyClient
       .getCurrentUserSavedAudiobooks()
       .pipe(map((response) => response.items));

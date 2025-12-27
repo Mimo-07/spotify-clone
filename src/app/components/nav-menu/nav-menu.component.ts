@@ -12,6 +12,7 @@ import { Playlist } from '../../shared/interfaces/playlist.interface';
 import { Artist } from '../../shared/interfaces/artist.interface';
 import { Album } from '../../shared/interfaces/albums.interface';
 import { RecordType } from '../../shared/interfaces/base.interface';
+import { SimplifiedAudiobook } from '../../shared/interfaces/audiobooks.interface';
 
 @Component({
   selector: 'nav-menu',
@@ -62,6 +63,7 @@ export class NavMenuComponent implements OnInit {
           this.#spotifyWebHelper.fetchCurrentUserPlaylists(),
           this.#spotifyWebHelper.fetchCurrentUserFollowedArtists(),
           this.#spotifyWebHelper.fetchCurrentUserSavedAlbums(),
+          this.#spotifyWebHelper.fetchCurrentUserSavedAudibooks(),
         ]).pipe(
           map((responseArray) => {
             return this.#processFetchedItemsForUI(responseArray);
@@ -117,7 +119,8 @@ export class NavMenuComponent implements OnInit {
       | [Playlist[]]
       | [Artist[]]
       | [Album[]]
-      | [Playlist[], Artist[], Album[]],
+      | [SimplifiedAudiobook[]]
+      | [Playlist[], Artist[], Album[], SimplifiedAudiobook[]],
   ): Item[] {
     return responseArray.flatMap((eachResponse) =>
       eachResponse.map((eachItem) => {
