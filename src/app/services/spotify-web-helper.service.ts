@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { SpotifyClient } from '../spotify-client/spotify-client';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   Playlist,
   PlaylistApiResponse,
